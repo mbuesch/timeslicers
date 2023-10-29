@@ -1,5 +1,11 @@
 # Simple periodic time slice scheduler
 
+[Project home](https://bues.ch/)
+
+[Git repository](https://bues.ch/cgit/timeslicers.git)
+
+[Github repository](https://github.com/mbuesch/timeslicers)
+
 A simple multi-core scheduler that provides a trait to the application.
 This trait, if implemented for an application specific object, can be used to get periodic calls from the scheduler.
 The application trait object has to be registered to the scheduler to get the periodic calls.

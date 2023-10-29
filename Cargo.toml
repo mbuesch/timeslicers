@@ -8,7 +8,8 @@ edition     = "2021"
 authors     = [ "Michael Büsch <m@bues.ch>" ]
 license     = "MIT OR Apache-2.0"
 readme      = "README.md"
-repository  = "https://bues.ch/cgit/timeslicers.git"
+repository  = "https://github.com/mbuesch/timeslicers.git"
+#repository = "https://bues.ch/cgit/timeslicers.git"
 
 categories  = [ "concurrency", "embedded", "hardware-support" ]
 keywords    = [ "scheduler", "task", "periodic" ]
