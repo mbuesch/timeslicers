@@ -1,6 +1,19 @@
 # Simple periodic time slice scheduler
 
-A simple multi-core scheduler that provides a trait with periodically called methods and a scheduler to call these methods as specified.
+A simple multi-core scheduler that provides a trait to the application.
+This trait, if implemented for an application specific object, can be used to get periodic calls from the scheduler.
+The application trait object has to be registered to the scheduler to get the periodic calls.
+
+Task methods of the scheduler trait are optional to implement, if one or more methods is not needed for a particular application object.
+
+## Restrictions
+
+To keep things simple, the scheduler has a couple of restrictions:
+
+- All task periods must be multiples of the smallest task period.
+- All tasks run with the same OS priority. Therefore, the tasks won't interrupt each other.
+- The order of execution of the tasks us undefined.
+- The number of application objects that can be registered to the scheduler is compile time constant.
 
 # Cargo.toml
 
@@ -79,6 +92,15 @@ One backend has to be selected via `feature` flags. The following backends are a
 - `hal-dummy`: Backend for testing only. It does nothing. You should never select it.
 
 Only one of the hal backend `feature` flags can be selected.
+
+## esp-idf-hal and esp-idf-svc versions
+
+The `hal-espidf` backend depends on the following crates:
+
+```toml
+esp-idf-hal = "0.42"
+esp-idf-svc = "0.47"
+```
 
 # Features
 
