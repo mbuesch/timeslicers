@@ -14,12 +14,14 @@ use std::{
     io::Write,
     sync::{
         atomic::{
-            AtomicBool, AtomicI64, AtomicU32,
+            AtomicBool, AtomicU32,
             Ordering::{Acquire, Relaxed, SeqCst},
         },
         RwLock,
     },
 };
+
+const TIMSK: u32 = 0x7FFF_FFFF;
 
 fn usfmt(us: u32) -> String {
     if us >= 1000 {
@@ -127,7 +129,7 @@ impl RtTaskData {
 pub struct RuntimeMeas {
     initialized: AtomicBool,
     enabled: AtomicBool,
-    print_stamp: AtomicI64,
+    print_stamp: AtomicU32,
     cpus: [RtCpuData; crate::hal::CORES],
     tasks: RwLock<HashMap<&'static str, RtTaskData>>,
 }
@@ -139,16 +141,16 @@ impl RuntimeMeas {
         Self {
             initialized: AtomicBool::new(false),
             enabled: AtomicBool::new(false),
-            print_stamp: AtomicI64::new(0),
+            print_stamp: AtomicU32::new(0),
             cpus: [RTCPUDATA_INIT; crate::hal::CORES],
             tasks: RwLock::new(HashMap::new()),
         }
     }
 
     #[inline]
-    pub fn meas_begin(&self) -> i64 {
+    pub fn meas_begin(&self) -> i32 {
         if self.is_enabled() {
-            crate::hal::now_us()
+            (crate::hal::now_us() & TIMSK) as i32
         } else {
             -1
         }
@@ -161,11 +163,11 @@ impl RuntimeMeas {
     }
 
     #[inline]
-    pub fn meas_end(&self, task_name: &'static str, core: usize, begin: i64) {
+    pub fn meas_end(&self, task_name: &'static str, core: usize, begin: i32) {
         if !self.is_enabled() || begin < 0 {
             return;
         }
-        let rt = crate::hal::now_us().wrapping_sub(begin) as u32;
+        let rt = (crate::hal::now_us() & TIMSK).wrapping_sub(begin as u32) & TIMSK;
         if !(0..10_000_000).contains(&rt) {
             return;
         }
@@ -187,7 +189,7 @@ impl RuntimeMeas {
 
     pub fn print_cpus(&self) {
         if self.is_enabled() {
-            let now = crate::hal::now_us();
+            let now = crate::hal::now_us() & TIMSK;
             let initialized = self.initialized.swap(true, Relaxed);
             let prev_time = if initialized {
                 self.print_stamp.load(Relaxed)
@@ -195,12 +197,11 @@ impl RuntimeMeas {
                 self.print_stamp.store(now, Relaxed);
                 now
             };
-            let period = now.wrapping_sub(prev_time);
+            let period = now.wrapping_sub(prev_time) & TIMSK;
             if period >= 10_000_000 {
                 self.print_stamp.store(now, Relaxed);
             } else if period >= 100_000 {
                 self.print_stamp.store(now, Relaxed);
-                let period = period as u32;
                 let mut stdout = std::io::stdout().lock();
                 let _ = writeln!(stdout);
                 for cpu in 0..crate::hal::CORES {

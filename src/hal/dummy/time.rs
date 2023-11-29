@@ -8,7 +8,7 @@
 //
 
 #[inline]
-pub fn now_us() -> i64 {
+pub fn now_us() -> u32 {
     0
 }
 

@@ -8,9 +8,9 @@
 //
 
 #[inline]
-pub fn now_us() -> i64 {
+pub fn now_us() -> u32 {
     let systime = esp_idf_svc::systime::EspSystemTime;
-    systime.now().as_micros() as i64
+    systime.now().as_micros() as u32
 }
 
 // vim: ts=4 sw=4 expandtab

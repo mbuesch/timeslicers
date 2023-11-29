@@ -16,12 +16,12 @@ impl RuntimeMeas {
     }
 
     #[inline(always)]
-    pub fn meas_begin(&self) -> i64 {
+    pub fn meas_begin(&self) -> i32 {
         0
     }
 
     #[inline(always)]
-    pub fn meas_end(&self, _task_name: &'static str, _core: usize, _begin: i64) {}
+    pub fn meas_end(&self, _task_name: &'static str, _core: usize, _begin: i32) {}
 
     #[inline(always)]
     pub fn print_cpus(&self) {}
