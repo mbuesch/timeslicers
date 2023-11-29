@@ -17,7 +17,7 @@ pub struct Timer<'a> {
 impl<'a> Timer<'a> {
     pub fn new<F>(_callback: F, _period: Duration) -> Self
     where
-        F: FnMut() + Send + 'a,
+        F: FnMut() + Send + 'static,
     {
         Self { _x: PhantomData }
     }

@@ -18,7 +18,7 @@ pub struct Timer<'a> {
 impl<'a> Timer<'a> {
     pub fn new<F>(callback: F, period: Duration) -> Self
     where
-        F: FnMut() + Send + 'a,
+        F: FnMut() + Send + 'static,
     {
         let timsvc = EspTimerService::new().expect("Failed to create system timer service.");
         let tim = timsvc
