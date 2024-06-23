@@ -18,14 +18,18 @@ To keep things simple, the scheduler has a couple of restrictions:
 
 - All task periods must be multiples of the smallest task period.
 - All tasks run with the same OS priority. Therefore, the tasks won't interrupt each other.
-- The order of execution of the tasks us undefined.
+- The order of execution of the tasks is undefined.
 - The number of application objects that can be registered to the scheduler is compile time constant.
+
+## Supported platforms
+
+- esp-idf-hal: ESP32 with IDF.
 
 # Cargo.toml
 
 ```toml
 [dependencies]
-timeslice = { version = "0.1", features = [ "hal-espidf", "meas" ] }
+timeslice = { version = "0.4", features = [ "hal-espidf", "meas" ] }
 ```
 
 # Example code
@@ -104,8 +108,8 @@ Only one of the hal backend `feature` flags can be selected.
 The `hal-espidf` backend depends on the following crates:
 
 ```toml
-esp-idf-hal = "0.42"
-esp-idf-svc = "0.47"
+esp-idf-hal = "0.44"
+esp-idf-svc = "0.49"
 ```
 
 # Features
@@ -125,7 +129,7 @@ This crate does not use `unsafe` code.
 
 # License
 
-Copyright 2023 Michael Büsch <m@bues.ch>
+Copyright 2023-2024 Michael Büsch <m@bues.ch>
 
 Licensed under the Apache License version 2.0 or the MIT license, at your option.
 
