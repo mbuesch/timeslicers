@@ -1,6 +1,6 @@
 // -*- coding: utf-8 -*-
 //
-// Copyright 2023 Michael Büsch <m@bues.ch>
+// Copyright 2023-2024 Michael Büsch <m@bues.ch>
 //
 // Licensed under the Apache License version 2.0
 // or the MIT license, at your option.
@@ -39,6 +39,7 @@ macro_rules! define_timeslice_sched {
                         Arc,
                         Condvar,
                         Mutex,
+                        LazyLock,
                     },
                     thread,
                     time::Duration,
@@ -70,10 +71,10 @@ macro_rules! define_timeslice_sched {
                     rt: RuntimeMeas,
                 }
 
-                lazy_static::lazy_static! {
-                    /// Time slice scheduler instance.
-                    #[doc(hidden)]
-                    static ref TIMESLICESCHED: TimeSliceSched = TimeSliceSched {
+                /// Time slice scheduler instance.
+                #[doc(hidden)]
+                static TIMESLICESCHED: LazyLock<TimeSliceSched> = LazyLock::new(|| {
+                    TimeSliceSched {
                         initialized: AtomicBool::new(false),
                         baseperiod: AtomicU32::new(0),
                         count: AtomicU32::new(0),
@@ -83,12 +84,13 @@ macro_rules! define_timeslice_sched {
                                                                Condvar::new())),
                         )*
                         rt: RuntimeMeas::new(),
-                    };
+                    }
+                });
 
-                    /// Time slice scheduler instance.
-                    #[doc(hidden)]
-                    static ref TIMESLICESCHED_OS: Mutex<Option<$crate::hal::Timer<'static>>> = Mutex::new(None);
-                }
+                /// Time slice scheduler instance.
+                #[doc(hidden)]
+                static TIMESLICESCHED_OS: LazyLock<Mutex<Option<$crate::hal::Timer<'static>>>>
+                    = LazyLock::new(|| Mutex::new(None));
 
                 /// Time slice scheduler initialization.
                 #[inline]
