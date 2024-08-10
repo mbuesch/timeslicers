@@ -12,5 +12,10 @@ for path in $(echo "$PATH" | tr ':' ' '); do
 done
 [ -f "$MAKERELEASE_LIB" ] && . "$MAKERELEASE_LIB" || die "makerelease.lib not found."
 
+hook_get_version()
+{
+	version="$(cargo_local_pkg_version timeslice)"
+}
+
 project=timeslice
 makerelease "$@"
