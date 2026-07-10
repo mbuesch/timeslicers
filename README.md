@@ -1,8 +1,9 @@
-# Simple periodic time slice scheduler
+# Periodic time slice scheduler - For embedded sytems
 
 [Github repository](https://github.com/mbuesch/timeslicers)
 
-A simple multi-core scheduler that provides a trait to the application.
+A simple multi-core scheduler that provides a scheduler trait to the application.
+
 This trait, if implemented for an application specific object, can be used to get periodic calls from the scheduler.
 The application trait object has to be registered to the scheduler to get the periodic calls.
 
@@ -13,7 +14,7 @@ Task methods of the scheduler trait are optional to implement, if one or more me
 To keep things simple, the scheduler has a couple of restrictions:
 
 - All task periods must be multiples of the smallest task period.
-- All tasks run with the same OS priority. Therefore, the tasks won't interrupt each other.
+- All tasks run with the same OS priority. Therefore, all tasks on the same CPU core won't interrupt each other.
 - The order of execution of the tasks is undefined.
 - The number of application objects that can be registered to the scheduler is compile time constant.
 
