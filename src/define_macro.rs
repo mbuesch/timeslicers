@@ -43,6 +43,7 @@ macro_rules! define_timeslice_sched {
                     },
                     thread,
                     time::Duration,
+                    ffi::CStr,
                 };
                 use $crate::meas::RuntimeMeas;
 
@@ -144,8 +145,10 @@ macro_rules! define_timeslice_sched {
 
                             let core: usize = $core;
                             let stack: usize = ($stack_kib) * 1024;
+                            let name: &'static str = std::concat!(std::stringify!($name), "_cpu", $core, "\0");
+                            let name_cstr = CStr::from_bytes_with_nul(name.as_bytes()).unwrap();
                             $crate::hal::task_spawn(
-                                std::concat!(std::stringify!($name), "_cpu", $core, "\0"),
+                                name_cstr,
                                 core,
                                 stack,
                                 move || {

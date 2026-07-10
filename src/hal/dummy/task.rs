@@ -7,7 +7,9 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
-pub fn task_spawn<F, T>(_name: &'static str, _core: usize, _stack_size: usize, _f: F)
+use std::ffi::CStr;
+
+pub fn task_spawn<F, T>(_name: &'static CStr, _core: usize, _stack_size: usize, _f: F)
 where
     F: FnOnce() -> T + Send + 'static,
     T: Send + 'static,
