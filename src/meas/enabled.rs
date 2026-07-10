@@ -233,7 +233,7 @@ impl RuntimeMeas {
                 let cum = rt_task.cum().swap(0, Relaxed);
                 let min = rt_task.min().load(Relaxed);
                 let max = rt_task.max().load(Relaxed);
-                let avg = if count > 0 { cum / count } else { u32::MAX };
+                let avg = cum.checked_div(count).unwrap_or(u32::MAX);
                 if min != u32::MAX {
                     let _ = writeln!(
                         stdout,
