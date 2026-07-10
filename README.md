@@ -1,9 +1,5 @@
 # Simple periodic time slice scheduler
 
-[Project home](https://bues.ch/)
-
-[Git repository](https://bues.ch/cgit/timeslicers.git)
-
 [Github repository](https://github.com/mbuesch/timeslicers)
 
 A simple multi-core scheduler that provides a trait to the application.
@@ -29,7 +25,7 @@ To keep things simple, the scheduler has a couple of restrictions:
 
 ```toml
 [dependencies]
-timeslice = { version = "0.4", features = [ "hal-espidf", "meas" ] }
+timeslice = { version = "0.5", features = [ "hal-espidf", "meas" ] }
 ```
 
 # Example code
@@ -108,8 +104,8 @@ Only one of the hal backend `feature` flags can be selected.
 The `hal-espidf` backend depends on the following crates:
 
 ```toml
-esp-idf-hal = "0.44"
-esp-idf-svc = "0.49"
+esp-idf-hal = "0.46"
+esp-idf-svc = "0.52"
 ```
 
 # Features
@@ -129,7 +125,7 @@ This crate does not use `unsafe` code.
 
 # License
 
-Copyright 2023-2024 Michael Büsch <m@bues.ch>
+Copyright 2023-2026 Michael Büsch <m@bues.ch>
 
 Licensed under the Apache License version 2.0 or the MIT license, at your option.
 
