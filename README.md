@@ -1,4 +1,4 @@
-# Periodic time slice scheduler - For embedded sytems
+# Periodic time slice scheduler - For embedded systems
 
 [Github repository](https://github.com/mbuesch/timeslicers)
 
