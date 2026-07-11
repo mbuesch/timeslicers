@@ -2,20 +2,32 @@
 
 [Github repository](https://github.com/mbuesch/timeslicers)
 
-A simple multi-core scheduler that provides a scheduler trait to the application.
+A simple multi-core fixed interval task scheduler.
 
-This trait, if implemented for an application specific object, can be used to get periodic calls from the scheduler.
-The application trait object has to be registered to the scheduler to get the periodic calls.
+In embedded applications it is often needed to do things in fixed intervals.
+This scheduler provides a flexible interface to define fixed interval tasks.
 
-Task methods of the scheduler trait are optional to implement, if one or more methods is not needed for a particular application object.
+A macro defines at compile time:
+
+- The task names
+- The task period/interval
+- The CPU core statically assigned to the task
+- The stack size
+
+The macro generates a trait, which must be implemented for one or more application objects.
+This trait defines the functions being called by the scheduler at the specified intervals.
+
+Task trait methods are optional to implement.
+The default implementation is to do nothing.
 
 ## Restrictions
 
 To keep things simple, the scheduler has a couple of restrictions:
 
 - All task periods must be multiples of the smallest task period.
-- All tasks run with the same OS priority. Therefore, all tasks on the same CPU core won't interrupt each other.
-- The order of execution of the tasks is undefined.
+- The tasks are triggered in the order they are defined in the macro.
+  A best effort is being made that the task do actually also execute in that order, but there is no guarantee.
+  Tasks defined higher up in the macro have a higher priority.
 - The number of application objects that can be registered to the scheduler is compile time constant.
 
 ## Supported platforms
