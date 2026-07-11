@@ -122,6 +122,11 @@ esp-idf-hal = "0.46"
 esp-idf-svc = "0.52"
 ```
 
+## Porting to other hardware
+
+Porting this crate to other hardware is possible.
+Please open an Issue and/or a Pull Request, if you need support for other hardware.
+
 # Features
 
 - `meas`: If the `meas` feature is enabled, then functions for run time measurements will be enabled.
@@ -131,7 +136,8 @@ esp-idf-svc = "0.52"
 
 ## ESP-IDF implementation details
 
-On `hal-espidf` each task runs as a `std::thread` that is pinned to the specified CPU core. The threads wait for a trigger signal from a periodic ESP timer. On triggering, the trait methods are executed, if the time slice is due.
+On `hal-espidf` each task runs as a `std::thread` that is pinned to the specified CPU core.
+The threads wait for a trigger signal from a periodic high priority ESP timer task.
 
 ## Memory safety
 
