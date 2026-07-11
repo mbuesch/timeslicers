@@ -24,7 +24,7 @@ where
     conf.name = Some(name);
     conf.inherit = true;
     conf.stack_size = stack_size;
-    conf.priority = priority.min(MAX_TASK_PRIO).max(MIN_TASK_PRIO);
+    conf.priority = priority.clamp(MIN_TASK_PRIO, MAX_TASK_PRIO);
     conf.pin_to_core = Some((core as i32).into());
     ThreadSpawnConfiguration::set(&conf).expect("Failed to set thread configuration.");
 
