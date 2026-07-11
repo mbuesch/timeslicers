@@ -19,6 +19,7 @@ macro_rules! define_sched {
                     name: $taskname:ident,
                     period: $timebase:literal ms,
                     cpu: $core:literal,
+                    prio: $prio:literal,
                     stack: $stack_kib:literal kiB
                 }
             ),* $(,)?
@@ -141,20 +142,21 @@ macro_rules! define_sched {
                         let count_mod = max_timebase / baseperiod;
 
                         // Spawn all handler threads.
-                        let mut priority = $crate::hal::MAX_TASK_PRIO;
                         $(
                             // Clone shared variable refs.
                             let [<thread_trigflag_ $taskname>] = Arc::clone(&TIMESLICESCHED.[<trigflag_ $taskname>]);
                             let [<thread_objs_ $taskname>] = Arc::clone(&objs);
 
                             let core: usize = $core;
+                            let prio: u8 = $prio;
+                            assert!(prio < 10, "prio must be a number in the range 0..=9");
                             let stack: usize = ($stack_kib) * 1024;
                             let name: &'static str = core::concat!(core::stringify!($name), "_cpu", $core, "\0");
                             let name_cstr = CStr::from_bytes_with_nul(name.as_bytes()).unwrap();
                             $crate::hal::task_spawn(
                                 name_cstr,
                                 core,
-                                priority,
+                                prio,
                                 stack,
                                 move || {
                                     assert_eq!($crate::hal::current_core(), core);
@@ -181,7 +183,6 @@ macro_rules! define_sched {
                                     }
                                 }
                             );
-                            priority = priority.saturating_sub(1);
                         )*
 
                         TIMESLICESCHED.baseperiod.store(baseperiod, Relaxed);

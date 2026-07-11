@@ -20,10 +20,10 @@
 //!     name: sched_main,
 //!     num_objs: 2,
 //!     tasks: {
-//!         { name: task_10ms, period: 10 ms, cpu: 0, stack: 16 kiB },
-//!         { name: task_50ms, period: 50 ms, cpu: 0, stack: 3 kiB },
-//!         { name: task_100ms, period: 100 ms, cpu: 1, stack: 16 kiB },
-//!         { name: task_1000ms, period: 1000 ms, cpu: 1, stack: 3 kiB },
+//!         { name: task_10ms,   period: 10 ms,   cpu: 0, prio: 9, stack: 16 kiB },
+//!         { name: task_50ms,   period: 50 ms,   cpu: 0, prio: 8, stack: 3 kiB  },
+//!         { name: task_100ms,  period: 100 ms,  cpu: 1, prio: 7, stack: 16 kiB },
+//!         { name: task_1000ms, period: 1000 ms, cpu: 1, prio: 6, stack: 3 kiB  },
 //!     },
 //! }
 //!
@@ -112,8 +112,8 @@
 //!     name: sched_main,
 //!     num_objs: 1,
 //!     tasks: {
-//!         { name: task_10ms, period: 10 ms, cpu: 0, stack: 8 kiB },
-//!         { name: task_1000ms, period: 1000 ms, cpu: 1, stack: 8 kiB },
+//!         { name: task_10ms,   period: 10 ms,   cpu: 0, prio: 9, stack: 8 kiB },
+//!         { name: task_1000ms, period: 1000 ms, cpu: 1, prio: 8, stack: 8 kiB },
 //!     },
 //! }
 //!

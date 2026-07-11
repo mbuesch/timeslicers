@@ -9,9 +9,6 @@
 
 use core::ffi::CStr;
 
-pub const MAX_TASK_PRIO: u8 = 20;
-pub const MIN_TASK_PRIO: u8 = 5;
-
 pub fn task_spawn<F, T>(
     _name: &'static CStr,
     _core: usize,

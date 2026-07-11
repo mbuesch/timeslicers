@@ -9,9 +9,10 @@ This scheduler provides a flexible interface to define fixed interval tasks.
 
 A macro defines at compile time:
 
-- The task names
+- The task name
 - The task period/interval
 - The CPU core statically assigned to the task
+- The task priority
 - The stack size
 
 The macro generates a trait, which must be implemented for one or more application objects.
@@ -20,15 +21,19 @@ This trait defines the functions being called by the scheduler at the specified 
 Task trait methods are optional to implement.
 The default implementation is to do nothing.
 
-## Restrictions
+## Behavior and restrictions
 
 To keep things simple, the scheduler has a couple of restrictions:
 
-- All task periods must be multiples of the smallest task period.
+- All task periods must be multiples of the smallest task period
+- The task priorities must be in the range `0..=9`
+- The number of application objects that can be registered to the scheduler is compile time constant
+
+Scheduling behavior:
+
 - The tasks are triggered in the order they are defined in the macro.
-  A best effort is being made that the task do actually also execute in that order, but there is no guarantee.
-  Tasks defined higher up in the macro have a higher priority.
-- The number of application objects that can be registered to the scheduler is compile time constant.
+  If multiple tasks are triggered at the same time, the ones with the higher priority will be executed first.
+- The actual execution order of tasks with the same priority triggered at the same time is not defined.
 
 ## Supported platforms
 
@@ -38,7 +43,7 @@ To keep things simple, the scheduler has a couple of restrictions:
 
 ```toml
 [dependencies]
-timeslice = { version = "0.5", features = [ "hal-espidf", "meas" ] }
+timeslice = { version = "0.7", features = [ "hal-espidf", "meas" ] }
 ```
 
 # Example code
@@ -51,9 +56,9 @@ timeslice::define_sched! {
     name: sched_main,
     num_objs: 1,
     tasks: {
-        { name: task_10ms, period: 10 ms, cpu: 0, stack: 16 kiB },
-        { name: task_50ms, period: 50 ms, cpu: 0, stack: 3 kiB },
-        { name: task_100ms, period: 100 ms, cpu: 1, stack: 16 kiB },
+        { name: task_10ms,  period: 10 ms,  cpu: 0, prio: 9, stack: 16 kiB },
+        { name: task_50ms,  period: 50 ms,  cpu: 0, prio: 8, stack: 3 kiB },
+        { name: task_100ms, period: 100 ms, cpu: 1, prio: 7, stack: 16 kiB },
     },
 }
 
