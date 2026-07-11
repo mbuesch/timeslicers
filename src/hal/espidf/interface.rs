@@ -8,7 +8,7 @@
 //
 
 pub use crate::hal::espidf::{
-    cpu::{current_core, CORES},
+    cpu::{CORES, current_core},
     task::task_spawn,
     time::now_us,
     timer::Timer,

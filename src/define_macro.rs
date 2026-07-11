@@ -104,7 +104,7 @@ macro_rules! define_timeslice_sched {
                     TIMESLICESCHED.rt.print_cpus();
                     $(
                         TIMESLICESCHED.rt.print_task(
-                            std::stringify!($taskname),
+                            core::stringify!($taskname),
                             $timebase,
                             $core
                         );
@@ -145,7 +145,7 @@ macro_rules! define_timeslice_sched {
 
                             let core: usize = $core;
                             let stack: usize = ($stack_kib) * 1024;
-                            let name: &'static str = std::concat!(std::stringify!($name), "_cpu", $core, "\0");
+                            let name: &'static str = core::concat!(core::stringify!($name), "_cpu", $core, "\0");
                             let name_cstr = CStr::from_bytes_with_nul(name.as_bytes()).unwrap();
                             $crate::hal::task_spawn(
                                 name_cstr,
@@ -172,7 +172,7 @@ macro_rules! define_timeslice_sched {
                                             obj.$taskname();
                                         }
 
-                                        TIMESLICESCHED.rt.meas_end(std::stringify!($taskname), $core, begin);
+                                        TIMESLICESCHED.rt.meas_end(core::stringify!($taskname), $core, begin);
                                     }
                                 }
                             );

@@ -13,11 +13,11 @@ use std::{
     collections::HashMap,
     io::Write,
     sync::{
+        RwLock,
         atomic::{
             AtomicBool, AtomicU32,
             Ordering::{Acquire, Relaxed, SeqCst},
         },
-        RwLock,
     },
 };
 

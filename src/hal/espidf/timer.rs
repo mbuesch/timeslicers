@@ -7,8 +7,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
+use core::time::Duration;
 use esp_idf_svc::timer::{EspTimer, EspTimerService, Task};
-use std::time::Duration;
 
 pub struct Timer<'a> {
     _timsvc: EspTimerService<Task>,

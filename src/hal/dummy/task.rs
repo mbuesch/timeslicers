@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
-use std::ffi::CStr;
+use core::ffi::CStr;
 
 pub fn task_spawn<F, T>(_name: &'static CStr, _core: usize, _stack_size: usize, _f: F)
 where

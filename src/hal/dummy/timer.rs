@@ -7,8 +7,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
-use std::marker::PhantomData;
-use std::time::Duration;
+use core::{marker::PhantomData, time::Duration};
 
 pub struct Timer<'a> {
     _x: PhantomData<&'a ()>,
