@@ -15,6 +15,8 @@
 //! ## Example code
 //!
 //! ```
+//! use std::sync::Arc;
+//!
 //! // Define the scheduler, its tasks and behavior.
 //! timeslice::define_timeslice_sched! {
 //!     name: sched_main,
@@ -39,7 +41,7 @@
 //!     }
 //! }
 //!
-//! impl sched_main::Ops for Box<MyThing1> {
+//! impl sched_main::Ops for MyThing1 {
 //!     fn task_10ms(&self) {
 //!         // Called every 10 ms.
 //!         // ... Put your code here ...
@@ -73,7 +75,7 @@
 //!     }
 //! }
 //!
-//! impl sched_main::Ops for Box<MyThing2> {
+//! impl sched_main::Ops for MyThing2 {
 //!     fn task_10ms(&self) {
 //!         // Called every 10 ms.
 //!         // ... Put your code here ...
@@ -86,9 +88,8 @@
 //! }
 //!
 //! fn main() {
-//!     use std::sync::Arc;
-//!     let thing1 = Arc::new(Box::new(MyThing1::new()));
-//!     let thing2 = Arc::new(Box::new(MyThing2::new()));
+//!     let thing1 = std::sync::Arc::new(MyThing1::new());
+//!     let thing2 = std::sync::Arc::new(MyThing2::new());
 //!
 //!     let obj1 = Arc::clone(&thing1);
 //!     let obj2 = Arc::clone(&thing2);

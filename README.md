@@ -59,7 +59,7 @@ impl MyThing {
 }
 
 // Implement the scheduler's tasks for your application.
-impl sched_main::Ops for Box<MyThing> {
+impl sched_main::Ops for MyThing {
     fn task_10ms(&self) {
         // Called every 10 ms.
         // ... Put your code here ...
@@ -78,8 +78,7 @@ impl sched_main::Ops for Box<MyThing> {
 
 fn main() {
     // Initialize the application.
-    use std::sync::Arc;
-    let thing = Arc::new(Box::new(MyThing::new()));
+    let thing = std::sync::Arc::new(MyThing::new());
 
     // Initialize the scheduler and register your application.
     let obj = Arc::clone(&thing);
