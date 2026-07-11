@@ -10,6 +10,7 @@
 use core::ffi::CStr;
 use esp_idf_hal::task::thread::ThreadSpawnConfiguration;
 
+#[allow(clippy::field_reassign_with_default)]
 pub fn task_spawn<F, T>(name: &'static CStr, core: usize, stack_size: usize, f: F)
 where
     F: FnOnce() -> T + Send + 'static,
