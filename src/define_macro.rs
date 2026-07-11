@@ -24,7 +24,7 @@ macro_rules! define_sched {
             ),* $(,)?
         } $(,)?
     ) => {
-        paste::paste! {
+        $crate::paste! {
             pub mod $name {
                 use std::{
                     sync::{

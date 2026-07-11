@@ -5,7 +5,7 @@ name = "timeslice"
 description = "Simple periodic time slice scheduler"
 version = "0.6.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 authors = [ "Michael Büsch <m@bues.ch>" ]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -19,7 +19,7 @@ keywords = [ "scheduler", "task", "periodic" ]
 cfg-if = "1"
 esp-idf-hal = { version = "0.46", optional = true }
 esp-idf-svc = { version = "0.52", optional = true }
-paste = "1"
+pastey = "0.2"
 
 [features]
 default = [ "hal-dummy", "meas" ]

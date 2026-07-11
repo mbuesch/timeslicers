@@ -152,4 +152,8 @@ pub mod meas;
 /// This module contains the main API macros.
 mod define_macro;
 
+/// Re-exported for define_sched macro.
+#[doc(hidden)]
+pub use pastey::paste;
+
 // vim: ts=4 sw=4 expandtab
