@@ -141,6 +141,7 @@ macro_rules! define_sched {
                         let count_mod = max_timebase / baseperiod;
 
                         // Spawn all handler threads.
+                        let mut priority = $crate::hal::MAX_TASK_PRIO;
                         $(
                             // Clone shared variable refs.
                             let [<thread_trigflag_ $taskname>] = Arc::clone(&TIMESLICESCHED.[<trigflag_ $taskname>]);
@@ -153,6 +154,7 @@ macro_rules! define_sched {
                             $crate::hal::task_spawn(
                                 name_cstr,
                                 core,
+                                priority,
                                 stack,
                                 move || {
                                     assert_eq!($crate::hal::current_core(), core);
@@ -179,6 +181,7 @@ macro_rules! define_sched {
                                     }
                                 }
                             );
+                            priority = priority.saturating_sub(1);
                         )*
 
                         TIMESLICESCHED.baseperiod.store(baseperiod, Relaxed);

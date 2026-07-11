@@ -9,7 +9,7 @@
 
 pub use crate::hal::dummy::{
     cpu::{CORES, current_core},
-    task::task_spawn,
+    task::{MAX_TASK_PRIO, MIN_TASK_PRIO, task_spawn},
     time::now_us,
     timer::Timer,
 };

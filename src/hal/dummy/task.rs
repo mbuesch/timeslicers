@@ -9,8 +9,16 @@
 
 use core::ffi::CStr;
 
-pub fn task_spawn<F, T>(_name: &'static CStr, _core: usize, _stack_size: usize, _f: F)
-where
+pub const MAX_TASK_PRIO: u8 = 20;
+pub const MIN_TASK_PRIO: u8 = 5;
+
+pub fn task_spawn<F, T>(
+    _name: &'static CStr,
+    _core: usize,
+    _priority: u8,
+    _stack_size: usize,
+    _f: F,
+) where
     F: FnOnce() -> T + Send + 'static,
     T: Send + 'static,
 {
