@@ -200,6 +200,8 @@ impl RuntimeMeas {
             let period = now.wrapping_sub(prev_time) & TIMSK;
             if period >= 10_000_000 {
                 self.print_stamp.store(now, Relaxed);
+                let mut stdout = std::io::stdout().lock();
+                let _ = writeln!(stdout, "CPU stats too old: Discarded.");
             } else if period >= 100_000 {
                 self.print_stamp.store(now, Relaxed);
                 let mut stdout = std::io::stdout().lock();
@@ -207,7 +209,7 @@ impl RuntimeMeas {
                 for cpu in 0..crate::hal::CORES {
                     let rt_cpu = &self.cpus[cpu];
                     let cur = rt_cpu.cum().swap(0, Relaxed);
-                    let cur = ((cur * 100) + (period / 2)) / period;
+                    let cur = (cur * 100).div_ceil(period);
                     let min = rt_cpu.min().load(Relaxed).min(cur);
                     let max = rt_cpu.max().load(Relaxed).max(cur);
                     rt_cpu.min().store(min, Relaxed);

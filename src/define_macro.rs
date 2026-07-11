@@ -102,14 +102,16 @@ macro_rules! define_sched {
 
                 /// Print the task and CPU runtime load.
                 pub fn rt_print() {
-                    TIMESLICESCHED.rt.print_cpus();
-                    $(
-                        TIMESLICESCHED.rt.print_task(
-                            core::stringify!($taskname),
-                            $timebase,
-                            $core
-                        );
-                    )*
+                    if TIMESLICESCHED.rt.is_enabled() {
+                        TIMESLICESCHED.rt.print_cpus();
+                        $(
+                            TIMESLICESCHED.rt.print_task(
+                                core::stringify!($taskname),
+                                $timebase,
+                                $core
+                            );
+                        )*
+                    }
                 }
 
                 #[inline]

@@ -15,8 +15,6 @@
 //! ## Example code
 //!
 //! ```
-//! use std::sync::Arc;
-//!
 //! // Define the scheduler, its tasks and behavior.
 //! timeslice::define_sched! {
 //!     name: sched_main,
@@ -93,6 +91,54 @@
 //!
 //!     sched_main::init([thing1, thing2]);
 //! }
+//! ```
+//!
+//! # Runtime stats
+//!
+//! The scheduler can capture and calculate runtime statistics
+//! so that you can get an idea about how loaded the CPUs are
+//! and how filled the time slices are.
+//!
+//! To enable measurement the crate feature `meas` has to be enabled in your
+//! `Cargo.toml` and at runtime the measurement has to be switched on with a call
+//! to `rt_enable(true)`.
+//! Then the statistics can then be printed to stdout with a call to `rt_print()`.
+//!
+//! Example:
+//!
+//! ```
+//! // Define the scheduler, its tasks and behavior.
+//! timeslice::define_sched! {
+//!     name: sched_main,
+//!     num_objs: 1,
+//!     tasks: {
+//!         { name: task_10ms, period: 10 ms, cpu: 0, stack: 8 kiB },
+//!         { name: task_1000ms, period: 1000 ms, cpu: 1, stack: 8 kiB },
+//!     },
+//! }
+//!
+//! struct MyThing1 { /* ... */ }
+//!
+//! impl sched_main::Ops for MyThing1 {
+//!     fn task_10ms(&self) {
+//!         // ...
+//!     }
+//!
+//!     fn task_1000ms(&self) {
+//!         // Print the scheduler statistics to stdout:
+//!         sched_main::rt_print();
+//!     }
+//! }
+//!
+//! fn main() {
+//!     let thing1 = std::sync::Arc::new(MyThing1 {});
+//!
+//!     sched_main::init([thing1]);
+//!
+//!     // Enable scheduler runtime measurement and statistics:
+//!     sched_main::rt_enable(true);
+//! }
+
 //! ```
 
 /// Do not access this module directly from other crates.
