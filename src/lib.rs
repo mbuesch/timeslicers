@@ -25,8 +25,8 @@
 //!         { name: task_10ms, period: 10 ms, cpu: 0, stack: 16 kiB },
 //!         { name: task_50ms, period: 50 ms, cpu: 0, stack: 3 kiB },
 //!         { name: task_100ms, period: 100 ms, cpu: 1, stack: 16 kiB },
-//!         { name: task_1000ms, period: 1000 ms, cpu: 1, stack: 3 kiB }
-//!     }
+//!         { name: task_1000ms, period: 1000 ms, cpu: 1, stack: 3 kiB },
+//!     },
 //! }
 //!
 //! struct MyThing1 {

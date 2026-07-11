@@ -21,8 +21,8 @@ macro_rules! define_sched {
                     cpu: $core:literal,
                     stack: $stack_kib:literal kiB
                 }
-            ),*
-        }
+            ),* $(,)?
+        } $(,)?
     ) => {
         paste::paste! {
             pub mod $name {
