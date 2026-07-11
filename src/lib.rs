@@ -91,11 +91,7 @@
 //!     let thing1 = std::sync::Arc::new(MyThing1::new());
 //!     let thing2 = std::sync::Arc::new(MyThing2::new());
 //!
-//!     let obj1 = Arc::clone(&thing1);
-//!     let obj2 = Arc::clone(&thing2);
-//!     sched_main::init([obj1, obj2]);
-//!
-//!     // ...
+//!     sched_main::init([thing1, thing2]);
 //! }
 //! ```
 

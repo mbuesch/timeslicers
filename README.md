@@ -81,10 +81,7 @@ fn main() {
     let thing = std::sync::Arc::new(MyThing::new());
 
     // Initialize the scheduler and register your application.
-    let obj = Arc::clone(&thing);
-    sched_main::init([obj]);
-
-    // ...
+    sched_main::init([thing]);
 }
 ```
 
