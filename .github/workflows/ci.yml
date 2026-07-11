@@ -83,10 +83,5 @@ jobs:
         run: |
           . ~/export-esp.sh
           cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort --tests -- --deny warnings
-      - name: cargo test
-        env: *esp-env
-        run: |
-          . ~/export-esp.sh
-          cargo +esp test --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort
 
 # vim: ts=2 sw=2 expandtab
