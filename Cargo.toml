@@ -2,7 +2,7 @@
 
 [package]
 name = "timeslice"
-description = "Simple periodic time slice scheduler"
+description = "Periodic time slice scheduler - For embedded systems"
 version = "0.6.0"
 edition = "2024"
 rust-version = "1.88"
@@ -10,7 +10,6 @@ authors = [ "Michael Büsch <m@bues.ch>" ]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/mbuesch/timeslicers.git"
-#repository = "https://bues.ch/cgit/timeslicers.git"
 
 categories = [ "concurrency", "embedded", "hardware-support" ]
 keywords = [ "scheduler", "task", "periodic" ]
