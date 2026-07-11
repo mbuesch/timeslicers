@@ -35,7 +35,7 @@ A simple usage example can look like this:
 
 ```rust
 // Here we define the scheduler, its tasks and behavior.
-timeslice::define_timeslice_sched! {
+timeslice::define_sched! {
     name: sched_main,
     num_objs: 1,
     tasks: {

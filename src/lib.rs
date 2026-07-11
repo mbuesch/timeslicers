@@ -18,7 +18,7 @@
 //! use std::sync::Arc;
 //!
 //! // Define the scheduler, its tasks and behavior.
-//! timeslice::define_timeslice_sched! {
+//! timeslice::define_sched! {
 //!     name: sched_main,
 //!     num_objs: 2,
 //!     tasks: {

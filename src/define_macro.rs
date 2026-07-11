@@ -7,8 +7,9 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
+/// Define a scheduler
 #[macro_export]
-macro_rules! define_timeslice_sched {
+macro_rules! define_sched {
     (
         name: $name:ident,
         num_objs: $num_objs:literal,
