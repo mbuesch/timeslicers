@@ -31,9 +31,77 @@ jobs:
       - run: rustup default stable
       - run: rustup component add clippy
 
+      - run: cargo build
       - run: cargo clippy -- --deny warnings
       - run: cargo clippy --tests -- --deny warnings
-
       - run: cargo test
+
+  hal-esp32:
+    name: hal-esp32
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cache Rust
+        uses: actions/cache@v5
+        with:
+          path: ~/.rustup
+          key: rustup-${{ runner.os }}-esp32
+      - name: Cache espup
+        uses: actions/cache@v5
+        with:
+          path: ~/.espup
+          key: espup-${{ runner.os }}-esp32
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: ~/.cargo
+          key: cargo-${{ runner.os }}-esp32
+
+      - run: rustup update stable
+      - run: cargo +stable install ldproxy
+      - run: cargo +stable install espup
+      - run: espup install
+
+      - name: cargo build
+        env:
+          CARGO_BUILD_TARGET: xtensa-esp32-espidf
+          RUSTFLAGS: "--cfg espidf_time64 -Z threads=8"
+          CARGO_TARGET_XTENSA_ESP32_ESPIDF_LINKER: ldproxy
+          ESP_IDF_SYS_ROOT_CRATE: timeslice
+          ESP_IDF_VERSION: "tag:v5.5.4"
+        run: |
+          . ~/export-esp.sh
+          cargo +esp build --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort
+      - name: cargo clippy
+        env:
+          CARGO_BUILD_TARGET: xtensa-esp32-espidf
+          RUSTFLAGS: "--cfg espidf_time64 -Z threads=8"
+          CARGO_TARGET_XTENSA_ESP32_ESPIDF_LINKER: ldproxy
+          ESP_IDF_SYS_ROOT_CRATE: timeslice
+          ESP_IDF_VERSION: "tag:v5.5.4"
+        run: |
+          . ~/export-esp.sh
+          cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort -- --deny warnings
+      - name: cargo clippy --tests
+        env:
+          CARGO_BUILD_TARGET: xtensa-esp32-espidf
+          RUSTFLAGS: "--cfg espidf_time64 -Z threads=8"
+          CARGO_TARGET_XTENSA_ESP32_ESPIDF_LINKER: ldproxy
+          ESP_IDF_SYS_ROOT_CRATE: timeslice
+          ESP_IDF_VERSION: "tag:v5.5.4"
+        run: |
+          . ~/export-esp.sh
+          cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort --tests -- --deny warnings
+      - name: cargo test
+        env:
+          CARGO_BUILD_TARGET: xtensa-esp32-espidf
+          RUSTFLAGS: "--cfg espidf_time64 -Z threads=8"
+          CARGO_TARGET_XTENSA_ESP32_ESPIDF_LINKER: ldproxy
+          ESP_IDF_SYS_ROOT_CRATE: timeslice
+          ESP_IDF_VERSION: "tag:v5.5.4"
+        run: |
+          . ~/export-esp.sh
+          cargo +esp test --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort
 
 # vim: ts=2 sw=2 expandtab
