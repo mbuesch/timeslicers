@@ -146,10 +146,8 @@ macro_rules! define_sched {
 
                         // Spawn all handler threads.
                         $(
-                            // Clone shared variable refs.
-                            let [<thread_trigflag_ $taskname>] = Arc::clone(&TIMESLICESCHED.[<trigflag_ $taskname>]);
-                            let [<thread_objs_ $taskname>] = Arc::clone(&objs);
-
+                            let thread_trigflag = Arc::clone(&TIMESLICESCHED.[<trigflag_ $taskname>]);
+                            let thread_objs = Arc::clone(&objs);
                             let core: usize = $core;
                             let prio: u8 = $prio;
                             assert!(prio < 10, "prio must be a number in the range 0..=9");
@@ -163,8 +161,7 @@ macro_rules! define_sched {
                                 stack,
                                 move || {
                                     assert_eq!($crate::hal::current_core(), core);
-                                    let (flag_mutex, trig_condvar) = &*[<thread_trigflag_ $taskname>];
-
+                                    let (flag_mutex, trig_condvar) = &*thread_trigflag;
                                     loop {
                                         // Wait for the thread flag to be set.
                                         {
@@ -178,7 +175,7 @@ macro_rules! define_sched {
                                         let begin = TIMESLICESCHED.rt.meas_begin();
 
                                         // Execute all handlers for this task.
-                                        for obj in &*[<thread_objs_ $taskname>] {
+                                        for obj in &*thread_objs {
                                             obj.$taskname();
                                         }
 
@@ -204,10 +201,10 @@ macro_rules! define_sched {
                         let baseperiod = self.baseperiod.load(Relaxed);
                         let count = self.count.load(Relaxed);
                         $(
-                            if count % ($timebase / baseperiod) == 0 {
-                                let ([<flag_ $taskname>], [<trig_ $taskname>]) = &*self.[<trigflag_ $taskname>];
-                                *[<flag_ $taskname>].lock().unwrap() = true;
-                                [<trig_ $taskname>].notify_one();
+                            if count % (($timebase) / baseperiod) == 0 {
+                                let (flag, trig) = &*self.[<trigflag_ $taskname>];
+                                *flag.lock().unwrap() = true;
+                                trig.notify_one();
                             }
                         )*
                         let count_mod = self.count_mod.load(Relaxed);
