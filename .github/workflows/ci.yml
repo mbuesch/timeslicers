@@ -64,7 +64,7 @@ jobs:
       - run: espup install
 
       # features: hal-espidf,meas
-      - name: cargo build
+      - name: cargo build (features: hal-espidf,meas)
         env: &esp-env
           CARGO_BUILD_TARGET: xtensa-esp32-espidf
           RUSTFLAGS: "--cfg espidf_time64 -Z threads=8"
@@ -74,29 +74,29 @@ jobs:
         run: |
           . ~/export-esp.sh
           cargo +esp build --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort
-      - name: cargo clippy
+      - name: cargo clippy (features: hal-espidf,meas)
         env: *esp-env
         run: |
           . ~/export-esp.sh
           cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort -- --deny warnings
-      - name: cargo clippy --tests
+      - name: cargo clippy --tests (features: hal-espidf,meas)
         env: *esp-env
         run: |
           . ~/export-esp.sh
           cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort --tests -- --deny warnings
 
       # features: hal-espidf
-      - name: cargo build
+      - name: cargo build (features: hal-espidf)
         env: *esp-env
         run: |
           . ~/export-esp.sh
           cargo +esp build --no-default-features --features hal-espidf -Z build-std=std,panic_abort
-      - name: cargo clippy
+      - name: cargo clippy (features: hal-espidf)
         env: *esp-env
         run: |
           . ~/export-esp.sh
           cargo +esp clippy --no-default-features --features hal-espidf -Z build-std=std,panic_abort -- --deny warnings
-      - name: cargo clippy --tests
+      - name: cargo clippy --tests (features: hal-espidf)
         env: *esp-env
         run: |
           . ~/export-esp.sh
