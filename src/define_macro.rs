@@ -140,6 +140,9 @@ macro_rules! define_sched {
                         )*
                         let baseperiod = min_timebase;
                         let count_mod = max_timebase / baseperiod;
+                        $(
+                            assert!(($timebase) % baseperiod == 0, "All task periods must be multiples of the smallest task period");
+                        )*
 
                         // Spawn all handler threads.
                         $(
