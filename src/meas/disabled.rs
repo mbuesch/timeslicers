@@ -7,6 +7,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
+#![allow(clippy::new_without_default)]
+
 pub struct RuntimeMeas {}
 
 impl RuntimeMeas {
