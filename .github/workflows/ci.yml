@@ -63,6 +63,7 @@ jobs:
       - run: cargo +stable install espup
       - run: espup install
 
+      # features: hal-espidf,meas
       - name: cargo build
         env: &esp-env
           CARGO_BUILD_TARGET: xtensa-esp32-espidf
@@ -83,5 +84,22 @@ jobs:
         run: |
           . ~/export-esp.sh
           cargo +esp clippy --no-default-features --features hal-espidf,meas -Z build-std=std,panic_abort --tests -- --deny warnings
+
+      # features: hal-espidf
+      - name: cargo build
+        env: *esp-env
+        run: |
+          . ~/export-esp.sh
+          cargo +esp build --no-default-features --features hal-espidf -Z build-std=std,panic_abort
+      - name: cargo clippy
+        env: *esp-env
+        run: |
+          . ~/export-esp.sh
+          cargo +esp clippy --no-default-features --features hal-espidf -Z build-std=std,panic_abort -- --deny warnings
+      - name: cargo clippy --tests
+        env: *esp-env
+        run: |
+          . ~/export-esp.sh
+          cargo +esp clippy --no-default-features --features hal-espidf -Z build-std=std,panic_abort --tests -- --deny warnings
 
 # vim: ts=2 sw=2 expandtab
