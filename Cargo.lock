@@ -1341,7 +1341,7 @@ dependencies = [
 
 [[package]]
 name = "timeslice"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "cfg-if",
  "esp-idf-hal",
