@@ -34,6 +34,8 @@ Scheduling behavior:
 - The tasks are triggered in the order they are defined in the macro.
   If multiple tasks are triggered at the same time, the ones with the higher priority will be executed first.
 - The actual execution order of tasks with the same priority triggered at the same time is not defined.
+- Tasks are preemptible.
+  If a task is running and a higher priority task is triggered, the higher priority task will preempt the lower priority task.
 
 ## Supported platforms
 
@@ -136,8 +138,9 @@ Please open an Issue and/or a Pull Request, if you need support for other hardwa
 
 ## ESP-IDF implementation details
 
-On `hal-espidf` each task runs as a `std::thread` that is pinned to the specified CPU core.
+On `hal-espidf` each task runs as a `std::thread` that is pinned to the specified CPU core with the specified priority plus 5.
 The threads wait for a trigger signal from a periodic high priority ESP timer task.
+The ESP timer task has a higher priority than all defined scheduler tasks, so it can preempt any of the scheduler tasks.
 
 ## Memory safety
 
